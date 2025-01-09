@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Repository\BookReadRepository;
+use App\Entity\BookRead;
+use App\Form\BookFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class HomeController extends AbstractController
 {
@@ -19,10 +23,13 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app.home')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $book = new BookRead();
+        $form = $this->createForm(BookFormType::class, $book);
+        $form->handleRequest($request);
+
         $user = $this->getUser();
-        // print_r($user);
         $userId     = 1;
         $booksRead  = $this->bookReadRepository->findByUserId($userId, false);
 
@@ -30,26 +37,8 @@ class HomeController extends AbstractController
         return $this->render('pages/home.html.twig', [
             'booksRead' => $booksRead,
             'name'      => 'Accueil', // Pass data to the view
-            'email' => $user ? $user->getEmail() : ""
+            'email' => $user ? $user->getEmail() : "",
+            'form' => $form
         ]);
     }
-
-
-    // #[Route('/login', name: 'auth.login')]
-    // public function login(): Response
-    // {
-    //     // Render the 'hello.html.twig' template
-    //     return $this->render('auth/login.html.twig', [
-    //         'name' => 'Thibaud', // Pass data to the view
-    //     ]);
-    // }
-
-    // #[Route('/register', name: 'auth.register')]
-    // public function register(): Response
-    // {
-    //     // Render the 'hello.html.twig' template
-    //     return $this->render('auth/register.html.twig', [
-    //         'name' => 'Thibaud', // Pass data to the view
-    //     ]);
-    // }
 }
