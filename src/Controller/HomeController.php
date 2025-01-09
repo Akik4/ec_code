@@ -21,6 +21,8 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app.home')]
     public function index(): Response
     {
+        $user = $this->getUser();
+        // print_r($user);
         $userId     = 1;
         $booksRead  = $this->bookReadRepository->findByUserId($userId, false);
 
@@ -28,25 +30,26 @@ class HomeController extends AbstractController
         return $this->render('pages/home.html.twig', [
             'booksRead' => $booksRead,
             'name'      => 'Accueil', // Pass data to the view
+            'email' => $user ? $user->getEmail() : ""
         ]);
     }
 
 
-    #[Route('/login', name: 'auth.login')]
-    public function login(): Response
-    {
-        // Render the 'hello.html.twig' template
-        return $this->render('auth/login.html.twig', [
-            'name' => 'Thibaud', // Pass data to the view
-        ]);
-    }
+    // #[Route('/login', name: 'auth.login')]
+    // public function login(): Response
+    // {
+    //     // Render the 'hello.html.twig' template
+    //     return $this->render('auth/login.html.twig', [
+    //         'name' => 'Thibaud', // Pass data to the view
+    //     ]);
+    // }
 
-    #[Route('/register', name: 'auth.register')]
-    public function register(): Response
-    {
-        // Render the 'hello.html.twig' template
-        return $this->render('auth/register.html.twig', [
-            'name' => 'Thibaud', // Pass data to the view
-        ]);
-    }
+    // #[Route('/register', name: 'auth.register')]
+    // public function register(): Response
+    // {
+    //     // Render the 'hello.html.twig' template
+    //     return $this->render('auth/register.html.twig', [
+    //         'name' => 'Thibaud', // Pass data to the view
+    //     ]);
+    // }
 }
