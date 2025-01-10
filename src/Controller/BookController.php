@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\BookRead;
+use App\Entity\Book;
 use App\Form\BookFormType;
 
 class BookController extends AbstractController
@@ -16,19 +17,25 @@ class BookController extends AbstractController
     public function list(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->getUser()){
-            $book = new BookRead();
-            $form = $this->createForm(BookFormType::class, $book);
+            $book = new Book();
+            $bookRead = new BookRead();
+            
+            $form = $this->createForm(BookFormType::class, $bookRead);
             $form->handleRequest($request);
             
+            $book = $entityManager->getRepository(Book::class)->findById($request->request->all()['book_form']['_book_id']);
             
-            if($form->isSubmitted() && $form->isValid()){
+            print_r($book->getName());
+
+            if($form->isSubmitted() /* && $form->isValid() */){
                 $date = (new \DateTime());
+                
+                $bookRead->setBook($book); 
+                $bookRead->setUserId($this->getUser()->getId());
+                $bookRead->setCreatedAt($date);
+                $bookRead->setUpdatedAt($date);
 
-                $book->setUserId($this->getUser()->getId());
-                $book->setCreatedAt($date);
-                $book->setUpdatedAt($date);
-
-                $entityManager->persist($book);
+                $entityManager->persist($bookRead);
                 $entityManager->flush();
             }
     

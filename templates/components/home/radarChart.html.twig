@@ -13,7 +13,8 @@
 </div>
 
 {# {% block javascripts %} #}
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {# <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> #}
+    <script src="{{ asset('metronic/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script>
         var options = {
             chart: {

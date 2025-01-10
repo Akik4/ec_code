@@ -13,7 +13,7 @@ class BookReadType extends AbstractType
     {
         $builder
             ->add('user_id')
-            ->add('book_id')
+            ->add('book_id', null)
             ->add('rating')
             ->add('description')
             ->add('is_read')

@@ -40,4 +40,14 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+   public function findById($bookId): ?Book
+   {
+       return $this->createQueryBuilder('b')
+           ->andWhere('b.id = :id')
+           ->setParameter('id', $bookId)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

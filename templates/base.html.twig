@@ -17,9 +17,7 @@
         [--tw-header-height:60px] [--tw-sidebar-width:90px] bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
     <!-- Theme Mode -->
         <script
-			  src="https://code.jquery.com/jquery-1.12.4.js"
-			  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
-			  crossorigin="anonymous"></script>
+			  src="{{ asset('controller/jquery-3.7.1.min.js') }}"></script>
     <script>
             const defaultThemeMode = 'light'; // light|dark|system
             let themeMode;
@@ -79,7 +77,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('metronic/js/core.bundle.js') }}"></script>
-    <script src="{{ asset('metronic/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('metronic/js/widgets/general.js') }}"></script>
     <!-- End of Scripts -->
 </body>

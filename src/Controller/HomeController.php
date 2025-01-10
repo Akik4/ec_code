@@ -27,40 +27,42 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app.home')]
     public function index(Request $request, ManagerRegistry $registry): Response
     {
-        $book = new BookRead();
-        $categoryRepo = new CategoryRepository($registry);
-        $form = $this->createForm(BookFormType::class, $book);
-        $form->handleRequest($request);
-
         $user = $this->getUser();
-        $userId     = 1;
-        $booksRead  = $this->bookReadRepository->findByUserId($userId, false);
-
-
-        $categories = $categoryRepo->getCategories();
-        
-        $count = $categoryRepo->countCategoriesByUser($user->getId());
-        $counter = array();
-
-        foreach ($categories as $key => $value) {
-            foreach($count as $countkey => $countvalue) {
-                if($value['id'] == $countvalue['id']) {
-                    $counter[$value['id']] = $countvalue['NUM'];
-                    break;
-                } else {
-                    $counter[$value['id']] =  0;
+        if($user){
+            $userId = $user->getId();
+            $book = new BookRead();
+            $categoryRepo = new CategoryRepository($registry);
+            $form = $this->createForm(BookFormType::class, $book);
+            $form->handleRequest($request);
+    
+            $booksRead  = $this->bookReadRepository->findByUserId($userId, false);
+    
+    
+            $categories = $categoryRepo->getCategories();
+            
+            $count = $categoryRepo->countCategoriesByUser($user->getId());
+            $counter = array();
+            foreach ($categories as $key => $value) {
+                foreach($count as $countkey => $countvalue) {
+                    if($value['id'] == $countvalue['id']) {
+                        $counter[$value['id']] = $countvalue['NUM'];
+                        break;
+                    } else {
+                        $counter[$value['id']] =  0;
+                    }
                 }
             }
         }
 
+
         // Render the 'hello.html.twig' template
         return $this->render('pages/home.html.twig', [
-            'booksRead' => $booksRead,
+            'booksRead' => isset($booksRead) ? $booksRead : "",
             'name'      => 'Accueil', // Pass data to the view
             'email' => $user ? $user->getEmail() : "",
-            'form' => $form,
-            'categories' => $categories,
-            'counter' => $counter
+            'form' => isset($form) ? $form : "",
+            'categories' => isset($categories) ? $categories : "",
+            'counter' => isset($counter) ? $counter : ""
         ]);
     }
 }
