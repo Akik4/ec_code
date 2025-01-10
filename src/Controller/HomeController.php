@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\CategoryRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 
 class HomeController extends AbstractController
@@ -23,9 +25,10 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app.home')]
-    public function index(Request $request): Response
+    public function index(Request $request, ManagerRegistry $registry): Response
     {
         $book = new BookRead();
+        $categoryRepo = new CategoryRepository($registry);
         $form = $this->createForm(BookFormType::class, $book);
         $form->handleRequest($request);
 
@@ -33,12 +36,31 @@ class HomeController extends AbstractController
         $userId     = 1;
         $booksRead  = $this->bookReadRepository->findByUserId($userId, false);
 
+
+        $categories = $categoryRepo->getCategories();
+        
+        $count = $categoryRepo->countCategoriesByUser($user->getId());
+        $counter = array();
+
+        foreach ($categories as $key => $value) {
+            foreach($count as $countkey => $countvalue) {
+                if($value['id'] == $countvalue['id']) {
+                    $counter[$value['id']] = $countvalue['NUM'];
+                    break;
+                } else {
+                    $counter[$value['id']] =  0;
+                }
+            }
+        }
+
         // Render the 'hello.html.twig' template
         return $this->render('pages/home.html.twig', [
             'booksRead' => $booksRead,
             'name'      => 'Accueil', // Pass data to the view
             'email' => $user ? $user->getEmail() : "",
-            'form' => $form
+            'form' => $form,
+            'categories' => $categories,
+            'counter' => $counter
         ]);
     }
 }

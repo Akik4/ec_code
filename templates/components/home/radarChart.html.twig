@@ -5,8 +5,47 @@
         </h3>
     </div>
     <div class="card-body flex flex-col gap-5">
-        <figure>
-            <img src="{{  asset('media/charts/Radar_Sample.png') }}" alt="Radar Sample"/>
+        <figure id="chart">
+
+            {# <img src="{{  asset('media/charts/Radar_Sample.png') }}" alt="Radar Sample"/> #}
         </figure>
     </div>
 </div>
+
+{# {% block javascripts %} #}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        var options = {
+            chart: {
+                width: 500,
+                height: 500,
+                type: 'radar'
+            },
+            series: [
+                {
+                name: "Radar Series 1",
+                data: [{% for key,value in counter %} '{{ value }}', {% endfor %}],
+                },
+            ],
+            fill: {
+                opacity: 0.5,
+                colors: ["cyan"]
+            },
+            xaxis: {
+                categories: [{% for key,value in categories %} '{{ value.name }}', {% endfor %}],
+                labels: {
+                    show: true,
+                    style: {
+                        colors: ["#a8a8a8"],
+                        fontSize: "11px",
+                        fontFamily: 'Arial',
+                    }
+                }
+            }
+        }
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+            chart.render();
+    </script>
+{# {% endblock %} #}
