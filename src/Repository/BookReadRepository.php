@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\BookRead;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Book;
 
 /**
  * @extends ServiceEntityRepository<BookRead>
@@ -25,6 +26,7 @@ class BookReadRepository extends ServiceEntityRepository
     public function findByUserId(int $userId, bool $readState): array
     {
         return $this->createQueryBuilder('r')
+            ->join(Book::class, 'b')
             ->where('r.user_id = :userId')
             ->andWhere('r.is_read = :isRead')
             ->setParameter('userId', $userId)
