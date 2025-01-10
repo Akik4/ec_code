@@ -36,6 +36,7 @@ class HomeController extends AbstractController
             $form->handleRequest($request);
     
             $booksRead  = $this->bookReadRepository->findByUserId($userId, false);
+            $booksReaded  = $this->bookReadRepository->findByUserId($userId, true);
     
     
             $categories = $categoryRepo->getCategories();
@@ -62,7 +63,8 @@ class HomeController extends AbstractController
             'email' => $user ? $user->getEmail() : "",
             'form' => isset($form) ? $form : "",
             'categories' => isset($categories) ? $categories : "",
-            'counter' => isset($counter) ? $counter : ""
+            'counter' => isset($counter) ? $counter : "",
+            'booksReaded' => isset($booksReaded) ? $booksReaded : ""
         ]);
     }
 }

@@ -36,44 +36,39 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
+                    {% for bookReaded in booksReaded %}
+                        <tr>
+                            <td>
                             <div class="flex flex-col gap-2">
                                 <a class="leading-none font-medium text-sm text-gray-900 hover:text-primary"
                                    href="#">
-                                    Le Moine qui vendit sa Ferrari
+                                    {{ bookReaded.getbook.getname }}
                                 </a>
                                 <span class="text-2sm text-gray-700 font-normal leading-3">
-                                    Un conte sur la quête du bonheur et du succès intérieur.
+                                    {{ bookReaded.getbook.description }}
                                 </span>
                             </div>
                         </td>
-                        <td>Spiritualité</td>
                         <td>
+                            {% for key,value in categories %}
+                                {% if value.id == bookReaded.getBook.categoryId %}
+                                    {{ value.name }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                        {% set i = 0 %}
+                        {% for i in 0..bookReaded.rating %}
                             <div class="rating">
                                 <div class="rating-label checked">
                                     <i class="rating-on ki-solid ki-star text-base leading-none"></i>
                                     <i class="rating-off ki-outline ki-star text-base leading-none"></i>
                                 </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                                <div class="rating-label checked">
-                                    <i class="rating-on ki-solid ki-star text-base leading-none"></i>
-                                    <i class="rating-off ki-outline ki-star text-base leading-none"></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                                {% set i = i + 1 %}
+                        {% endfor %}
+                        </td>        
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

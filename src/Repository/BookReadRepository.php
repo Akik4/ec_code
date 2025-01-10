@@ -37,4 +37,15 @@ class BookReadRepository extends ServiceEntityRepository
     }
 
 
+    public function getBooksRead() {
+    
+        return $this->createQueryBuilder('r')
+        ->join(Book::class, 'b')
+        // ->setHint(Paginator::HINT_ENABLE_DISTINCT, false)
+        ->setFirstResult(0)
+        ->setMaxResults(5)
+        ->getQuery();
+    
+    }
+
 }
