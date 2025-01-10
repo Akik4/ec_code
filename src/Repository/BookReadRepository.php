@@ -52,9 +52,10 @@ class BookReadRepository extends ServiceEntityRepository
 
         $conn = $this->getEntityManager()->getConnection();
 
-        $stmt = "SELECT book.name, AVG(book_read.rating) as NUM FROM book_read INNER JOIN book ON book.id = book_read.book_id INNER JOIN category ON category.id where book.name like '%". $value ."%' GROUP BY book_id;";
+        $stmt = "SELECT book.name, AVG(book_read.rating) as NUM, book.description FROM book_read INNER JOIN book ON book.id = book_read.book_id INNER JOIN category ON category.id 
+        where book.name like :val GROUP BY book_id;";
         
-        $resultSet = $conn->executeQuery($stmt, ['val' => $value]);
+        $resultSet = $conn->executeQuery($stmt, ['val' => '%'. $value .'%']);
 
         return $resultSet->fetchAllAssociative();
     }

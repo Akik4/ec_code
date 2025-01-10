@@ -32,22 +32,33 @@
         $.post("search", {value: value}, function(result) {
 
             document.querySelector('#search-result').innerHTML = "";
-            textzone = document.querySelector('#search-result').innerHtml;
+            textzone = document.querySelector('#search-result').innerHTML;
             for (const element of result) {
                 textzone += `<div class="menu-link flex justify-between gap-2">
                                 <div class="flex items-center gap-2.5">
-                                    <img alt="Cover" class="rounded-full size-9 shrink-0" src="" />
                                     <div class="flex flex-col">
                                         <a class="text-sm font-semibold text-gray-900 hover:text-primary-active mb-px"
                                            href="#">
                                             ${element.name}
                                         </a>
                                         <span class="text-2sm font-normal text-gray-500">
+                                            ${element.description}
                                             Un conte sur la quête du bonheur et du succès intérieur.
                                         </span>
                                     </div>
-                                </div>                              
-                                ${element.NUM == null ? 'Pas noté' : element.NUM}
+                                    <div class="flex items-center gap-2.5" class="stars">`
+
+                for(let i=0; i < element.NUM; i++){
+                    textzone += `<div class="rating">
+                                    <div class="rating-label checked">
+                                        <i class="rating-on ki-solid ki-star text-base leading-none"></i>
+                                        <i class="rating-off ki-outline ki-star text-base leading-none"></i>
+                                    </div>
+                                </div>`;
+                }                    
+
+                textzone +=         `</div>                       
+                                </div>    
                             </div>
                                 `
             }
